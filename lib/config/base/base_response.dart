@@ -1,7 +1,7 @@
 
 
 
-import '../errors/hadel_error_exception.dart';
+import '../errors/handel_error_exception.dart';
 
 sealed class BaseResponce<T> {}
 

@@ -1,0 +1,2218 @@
+================================================================================
+File: pubspec.yaml
+================================================================================
+
+name: cliniq_final_project
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.3
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+  retrofit: ^4.9.0
+  json_annotation: ^4.9.0
+  dio: ^5.11.0
+  injectable: ^3.0.0
+  equatable: ^2.0.7
+  get_it: ^9.2.1
+  flutter_bloc: ^8.1.3
+  flutter_screenutil_plus: ^1.6.0
+  persistent_bottom_nav_bar_v2: ^6.3.2
+  flutter_secure_storage: ^11.0.0
+  google_fonts: ^8.2.0
+  pinput: ^6.0.2
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_secure_storage_platform_interface: ^2.0.3
+  retrofit_generator: ^10.0.1
+  test: ^1.28.0
+  build_runner: ^2.6.0
+  json_serializable: ^6.10.0
+  injectable_generator: 3.0.2
+  mockito: ^5.5.0
+  bloc_test: ^9.1.2
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^6.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  generate: true
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
+
+================================================================================
+File: l10n.yaml
+================================================================================
+
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+
+================================================================================
+File: lib/config/base/base_response.dart
+================================================================================
+
+import '../errors/handel_error_exception.dart';
+
+sealed class BaseResponce<T> {}
+
+
+class SuccessResponce<T> extends BaseResponce<T> {
+  final T data;
+  SuccessResponce(this.data);
+}
+
+class ErrorResponce<T> extends BaseResponce<T> {
+  final String errorMessage;
+  final Exception error;
+  ErrorResponce(this.error ) : errorMessage = HandelErrorException().handelErrorexception(error);
+}
+
+
+//another way to initialize th final string messsage that write late to not create constractor until initialize the message
+// but this way less safety
+
+// class EroreResponce<T> extends BaseResponce<T> {
+//   late final String errorMessage;
+//   final Exception error;
+//   EroreResponce(this.error ){
+//     errorMessage = HandelErrorException().handelErrorexception(error);
+//   }
+// }
+
+================================================================================
+File: lib/config/base/base_state.dart
+================================================================================
+
+import 'package:equatable/equatable.dart';
+
+class BaseState<T> extends Equatable {
+  final String errorMessage;
+  final bool isLoading;
+  final T? data;
+
+  const BaseState({
+   this.isLoading = false,
+    this.errorMessage = '',
+    this.data,
+  });
+
+  BaseState<T> copyWith({String? errorMessage, bool? isLoading, T? data}) {
+    return BaseState<T>(
+      isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage ?? this.errorMessage,
+      data: data ?? this.data,
+    );
+  }
+
+  @override
+  List<Object?> get props => [isLoading, errorMessage, data];
+}
+
+================================================================================
+File: lib/config/di/di.config.dart
+================================================================================
+
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
+
+// **************************************************************************
+// InjectableConfigGenerator
+// **************************************************************************
+
+// ignore_for_file: type=lint
+// coverage:ignore-file
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+
+import 'package:dio/dio.dart' as _i361;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
+import 'package:get_it/get_it.dart' as _i174;
+import 'package:injectable/injectable.dart' as _i526;
+
+import '../dio/dio_module.dart' as _i977;
+import '../utils/secure_storage_module.dart' as _i327;
+
+extension GetItInjectableX on _i174.GetIt {
+  // initializes the registration of main-scope dependencies inside of GetIt
+  _i174.GetIt init({
+    String? environment,
+    _i526.EnvironmentFilter? environmentFilter,
+  }) {
+    final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    final dioModule = _$DioModule();
+    final secureStorageModule = _$SecureStorageModule();
+    gh.lazySingleton<_i361.Dio>(() => dioModule.dio());
+    gh.lazySingleton<_i558.FlutterSecureStorage>(
+      () => secureStorageModule.secureStorage,
+    );
+    return this;
+  }
+}
+
+class _$DioModule extends _i977.DioModule {}
+
+class _$SecureStorageModule extends _i327.SecureStorageModule {}
+
+================================================================================
+File: lib/config/di/di.dart
+================================================================================
+
+import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
+
+import 'di.config.dart';
+
+final getIt = GetIt.instance;
+
+@InjectableInit(
+  initializerName: 'init', // default
+  preferRelativeImports: true, // default
+  asExtension: true, // default
+)
+void configureDependencies() => getIt.init();
+
+================================================================================
+File: lib/config/dio/auth_interceptor.dart
+================================================================================
+
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+
+class AuthInterceptors extends Interceptor {
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    debugPrint('REQUEST[${options.method}] => PATH: ${options.path}');
+
+    //add method that get token from secure storage
+
+    super.onRequest(options, handler);
+  }
+  @override
+  Future onError(DioException err, ErrorInterceptorHandler handler) async {
+    debugPrint(
+      'ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}',
+    );
+    //add method that delete token from secure storage
+    super.onError(err, handler);
+  }
+}
+
+================================================================================
+File: lib/config/dio/dio_module.dart
+================================================================================
+
+import 'package:dio/dio.dart';
+
+import 'package:injectable/injectable.dart';
+
+import 'auth_interceptor.dart';
+
+@module
+abstract class DioModule {
+  @lazySingleton
+  Dio dio() {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: '',
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
+      ),
+    );
+    dio.interceptors.add(AuthInterceptors());
+    return dio;
+  }
+}
+
+================================================================================
+File: lib/config/errors/handel_error_exception.dart
+================================================================================
+
+import 'package:dio/dio.dart';
+
+class HandelErrorException {
+  String handelErrorexception(Exception error) {
+    if(error is DioException) return _hadelDioException(error);
+    return 'something went wrong, pls try again';
+  }
+
+ String _hadelDioException(DioException error) {
+   switch (error.type) {
+     case DioExceptionType.badCertificate:
+       return 'badCertificate';
+     case DioExceptionType.badResponse:
+       return 'badResponse';
+     case DioExceptionType.cancel:
+       return 'cancel';
+     case DioExceptionType.connectionTimeout:
+       return 'connectionTimeout';
+     case DioExceptionType.connectionError:
+       return 'connectionError';
+     case DioExceptionType.unknown:
+       return 'unknown';
+     case DioExceptionType.receiveTimeout:
+       return 'receiveTimeout';
+     case DioExceptionType.sendTimeout:
+       return 'sendTimeout';
+     case DioExceptionType.transformTimeout:
+       return 'transformTimeout';
+   }
+
+ }
+
+}
+
+================================================================================
+File: lib/config/routing/app_routes.dart
+================================================================================
+
+import 'package:cliniq_final_project/config/routing/routes.dart';
+
+import 'package:flutter/material.dart';
+
+
+abstract class AppRoutes {
+  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      // Auth
+      case Routes.login:
+        return MaterialPageRoute(builder: (_) => const Placeholder());
+
+      case Routes.signUp:
+        return MaterialPageRoute(builder: (_) => const Placeholder());
+
+      case Routes.forgotPassword:
+        return MaterialPageRoute(builder: (_) => const Placeholder());
+
+      case Routes.verificationCode:
+        return MaterialPageRoute(builder: (_) => const Placeholder());
+
+      case Routes.resetPassword:
+        return MaterialPageRoute(builder: (_) => const Placeholder());
+
+      default:
+        return MaterialPageRoute(
+          builder: (_) =>
+              const Scaffold(body: Center(child: Text('Route Not Found'))),
+        );
+    }
+  }
+}
+
+================================================================================
+File: lib/config/routing/routes.dart
+================================================================================
+
+abstract class Routes {
+  // Auth
+  static const String login = '/';
+  static const String signUp = '/sign_up';
+  static const String forgotPassword = '/forgot_password';
+  static const String verificationCode = '/verification_code';
+  static const String resetPassword = '/reset_password';
+
+}
+
+================================================================================
+File: lib/config/utils/auth_validators.dart
+================================================================================
+
+import '../../core/constants/app_strings/app_strings.dart';
+
+class AuthValidators {
+  AuthValidators._(); // prevent instantiation
+
+  static String? email(String? value) {
+    if (value == null || value.trim().isEmpty) return AppStrings.emailRequired;
+    final emailRegex = RegExp(r'^[\w.-]+@[\w.-]+\.\w{2,}$');
+    if (!emailRegex.hasMatch(value.trim())) return AppStrings.emailInvalid;
+    return null;
+  }
+
+  static String? password(String? value) {
+    if (value == null || value.isEmpty) return AppStrings.passwordRequired;
+    if (value.length < 8) return AppStrings.passwordMinLength;
+    return null;
+  }
+
+  /// Stricter policy for creating a new password (registration / reset),
+  /// as opposed to [password] which only checks an existing password is present.
+  static String? strongPassword(String? value) {
+    if (value == null || value.isEmpty) return AppStrings.passwordRequired;
+    final passwordRegex = RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$',
+    );
+    if (!passwordRegex.hasMatch(value)) {
+      return AppStrings.passwordStrongRules;
+    }
+    return null;
+  }
+
+  static String? confirmPassword(String? value, String original) {
+    if (value == null || value.isEmpty) return AppStrings.confirmPasswordRequired;
+    if (value != original) return AppStrings.confirmPasswordMismatch;
+    return null;
+  }
+
+  static String? username(String? value) {
+    if (value == null || value.trim().isEmpty) return AppStrings.usernameRequired;
+    if (value.trim().length < 3) {
+      return AppStrings.usernameMinLength;
+    }
+    return null;
+  }
+
+  static String? firstName(String? value) {
+    if (value == null || value.trim().isEmpty) return AppStrings.firstNameRequired;
+    if (!RegExp(r'^[a-zA-Z]{2,30}$').hasMatch(value)) {
+      return AppStrings.firstNameOnlyLetters;
+    }
+    return null;
+  }
+
+  static String? lastName(String? value) {
+    if (value == null || value.trim().isEmpty) return AppStrings.lastNameRequired;
+    if (!RegExp(r'^[a-zA-Z]{2,30}$').hasMatch(value)) {
+      return AppStrings.lastNameOnlyLetters;
+    }
+    return null;
+  }
+
+  static String? phone(String? value) {
+    if (value == null || value.isEmpty) return AppStrings.phoneRequired;
+    if (!RegExp(r'^01[0125][0-9]{8}$').hasMatch(value)) {
+      return AppStrings.phoneInvalid;
+    }
+    return null;
+  }
+}
+
+================================================================================
+File: lib/config/utils/secure_storage_module.dart
+================================================================================
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:injectable/injectable.dart';
+
+@module
+abstract class SecureStorageModule {
+  @lazySingleton
+  FlutterSecureStorage get secureStorage => const FlutterSecureStorage();
+}
+
+================================================================================
+File: lib/core/constants/api_strings/api_strings.dart
+================================================================================
+
+abstract class ApiStrings {
+
+}
+
+================================================================================
+File: lib/core/constants/app_strings/app_strings.dart
+================================================================================
+
+abstract class AppStrings{
+  static const String loginTitle = 'Login';
+  static const String emailLabel = 'Email';
+  static const String emailHint = 'Enter your email';
+  static const String emailError = 'This Email is not valid';
+  static const String passwordLabel = 'Password';
+  static const String passwordHint = 'Enter your password';
+  static const String passwordError = 'Invalid password';
+  static const String rememberMe = 'Remember me';
+  static const String forgetPassword = 'Forget password?';
+  static const String loginButton = 'Login';
+  static const String continueAsGuest = 'Continue as guest';
+  static const String dontHaveAccount = 'Don\'t have an account?';
+  static const String signUp = 'Sign up';
+  static const String firstNameLabel = 'First name';
+  static const String firstNameHint = 'Enter first name';
+  static const String lastNameLabel = 'Last name';
+  static const String lastNameHint = 'Enter last name';
+  static const String confirmPasswordLabel = 'Confirm password';
+  static const String confirmPasswordHint = 'Confirm password';
+  static const String phoneNumberLabel = 'Phone number';
+  static const String phoneNumberHint = 'Enter phone number';
+  static const String genderTitle = 'Gender';
+  static const String female = 'female';
+  static const String male = 'Male';
+  static const String termsPrefix = 'Creating an account, you agree to our ';
+  static const String termsLink = 'Terms&Conditions';
+  static const String alreadyHaveAccount = 'Already have an account?';
+  static const String passwordAppBarTitle = 'Password';
+  static const String forgetPasswordHeader = 'Forget password'; // Distinct from the "Forget password?" link
+  static const String forgetPasswordSubtitle = 'Please enter your email associated to your account';
+  static const String confirmButton = 'Confirm';
+  static const String emailVerificationTitle = 'Email verification';
+  static const String emailVerificationSubtitle = 'Please enter your code that send to your email address';
+  static const String invalidCodeError = 'Invalid code';
+  static const String didntReceiveCode = 'Didn\'t receive code? ';
+  static const String resendLink = 'Resend';
+  static const String resetPasswordTitle = 'Reset password';
+  static const String resetPasswordSubtitle =
+      'Password must not be empty and must contain\n 6 characters with upper case letter and one\n number at least';
+  static const String newPasswordLabel = 'New password';
+
+
+  // Auth storage keys
+  static const String refreshToken = 'refresh_token';
+  static const String accessToken = 'access_token';
+  static const String rememberedEmail = 'remembered_email';
+
+  // Auth error / validation messages
+  static const String loginFailed = 'Login failed';
+  static const String loginSuccess = 'Login successful';
+  static const String invalidCredentials = 'Invalid email or password';
+  static const String somethingWentWrong = 'Something went wrong';
+  static const String emailRequired = 'Email is required';
+  static const String emailInvalid = 'Enter a valid email';
+  static const String passwordRequired = 'Password is required';
+  static const String passwordMinLength =
+      'Password must be at least 8 characters';
+  static const String passwordStrongRules =
+      'Password must contain uppercase, lowercase, number and special character';
+  static const String confirmPasswordRequired = 'Please confirm your password';
+  static const String confirmPasswordMismatch = 'Passwords do not match';
+  static const String usernameRequired = 'Username is required';
+  static const String usernameMinLength =
+      'Username must be at least 3 characters';
+  static const String firstNameRequired = 'First name is required';
+  static const String firstNameOnlyLetters =
+      'First name must contain only letters';
+  static const String lastNameRequired = 'Last name is required';
+  static const String lastNameOnlyLetters =
+      'Last name must contain only letters';
+  static const String phoneRequired = 'Phone number is required';
+  static const String phoneInvalid = 'Enter a valid Egyptian phone number';
+  // Auth storage keys
+  // Auth error / validation messages
+  static const String registerError = 'Failed register';
+  static const String registerSuccess = 'Register successful';
+}
+
+================================================================================
+File: lib/core/constants/storage_keys.dart
+================================================================================
+
+class StorageKeys {
+
+}
+
+================================================================================
+File: lib/core/extensions/localization_extension.dart
+================================================================================
+
+import 'package:flutter/material.dart';
+
+import '../../l10n/app_localizations.dart';
+
+
+extension LocalizationExtension on BuildContext {
+  AppLocalizations get l10n => AppLocalizations.of(this)!;
+}
+
+================================================================================
+File: lib/core/shared/app_widgets/bottom_navigation_bar.dart
+================================================================================
+
+import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+
+
+
+class PersistenBottomNavBarDemo extends StatelessWidget {
+   PersistenBottomNavBarDemo({super.key});
+  final Widget homeScreen = Placeholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return PersistentTabView(
+      tabs: [
+      ],
+      navBarBuilder: (navBarConfig) =>
+          Style1BottomNavBar(navBarConfig: navBarConfig),
+    );
+  }
+}
+
+================================================================================
+File: lib/core/shared/app_widgets/custom_button.dart
+================================================================================
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+
+class CustomButton extends StatelessWidget {
+  const CustomButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+    required this.isEnabled,
+    this.isLoading = false,
+    required this.enabledColor,
+    this.disabledColor = Colors.grey,
+    this.textColor = Colors.white,
+  });
+
+  final String text;
+  final VoidCallback? onPressed;
+  final bool isEnabled;
+  final bool isLoading;
+  final Color enabledColor;
+  final Color disabledColor;
+  final Color textColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56.h,
+      child: ElevatedButton(
+        onPressed: (isEnabled && !isLoading) ? onPressed : null,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isEnabled ? enabledColor : disabledColor,
+          disabledBackgroundColor: isEnabled ? enabledColor : disabledColor,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.r),
+          ),
+        ),
+        child: isLoading
+            ? SizedBox(
+                width: 22.w,
+                height: 22.h,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.w,
+                  color: Colors.white,
+                ),
+              )
+            : Text(
+                text,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: textColor,
+                ),
+              ),
+      ),
+    );
+  }
+}
+
+================================================================================
+File: lib/core/shared/app_widgets/custom_outlined_button.dart
+================================================================================
+
+import 'package:flutter/material.dart';
+
+class CustomOutlinedButton extends StatelessWidget {
+  const CustomOutlinedButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+  });
+
+  final String text;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        child: Text(text),
+      ),
+    );
+  }
+}
+
+================================================================================
+File: lib/core/shared/app_widgets/custom_text_form_field.dart
+================================================================================
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+
+class CustomTextFormField extends StatelessWidget {
+  const CustomTextFormField({
+    super.key,
+    required this.label,
+    required this.hintText,
+    this.controller,
+    this.validator,
+    this.keyboardType,
+    this.obscureText = false,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.onChanged,
+    this.autovalidateMode,
+  });
+
+  final String label;
+  final String hintText;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final bool obscureText;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final ValueChanged<String>? onChanged;
+  final AutovalidateMode? autovalidateMode;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      autovalidateMode: autovalidateMode,
+      controller: controller,
+      validator: validator,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      onChanged: onChanged,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hintText,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16.w,
+          vertical: 18.h,
+        ),
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+      ),
+    );
+  }
+}
+
+================================================================================
+File: lib/core/themes/app_colors/app_colors.dart
+================================================================================
+
+import 'package:flutter/material.dart';
+
+abstract final class AppColors {
+  // Primary Palette
+  static const MaterialColor primary = MaterialColor(0xFF0284C7, <int, Color>{
+    50: Color(0xFFE0F2FE),
+    100: Color(0xFFBAE6FD),
+    200: Color(0xFF7DD3FC),
+    300: Color(0xFF38BDF8),
+    400: Color(0xFF38BDF8),
+    500: Color(0xFF0284C7),
+    600: Color(0xFF0284C7),
+    700: Color(0xFF0369A1),
+    800: Color(0xFF075985),
+    900: Color(0xFF0C4A6E),
+  });
+
+  static const Color primaryToken = Color(0xFF2F80ED);
+
+  // Background & Surface
+  static const Color background = Color(0xFFF8FAFC); // Canvas Tint
+  static const Color surface = Color(0xFFFFFFFF);
+  static const Color surfaceVariant = Color(0xFFF1F5F9);
+  static const Color surfaceLowest = Color(0xFFFFFFFF);
+
+  // Text Colors
+  static const Color textPrimary = Color(0xFF172B4D);
+  static const Color textSecondary = Color(0xFF64748B);
+  static const Color darkNavy = Color(0xFF16324F);
+  static const Color black = Color(0xFF0C1015);
+
+  // Structural Colors
+  static const Color border = Color(0xFFE2E8F0); // Structure Edge
+  static const Color divider = Color(0xFFE2E8F0); // Structure Edge
+
+  // Feedback Tokens
+  static const MaterialColor error = MaterialColor(0xFFDC2626, <int, Color>{
+    50: Color(0xFFFEF2F2),
+    100: Color(0xFFFEE2E2),
+    200: Color(0xFFFECACA),
+    300: Color(0xFFFCA5A5),
+    400: Color(0xFFF87171),
+    500: Color(0xFFDC2626),
+    600: Color(0xFFDC5A5A),
+    700: Color(0xFFB91C1C),
+    800: Color(0xFF991B1B),
+    900: Color(0xFF7F1D1D),
+  });
+
+  static const Color errorVariant = Color(0xFFDC5A5A);
+
+  static const MaterialColor success = MaterialColor(0xFF22A06B, <int, Color>{
+    50: Color(0xFFE6F7F0),
+    100: Color(0xFFC3EFE0),
+    200: Color(0xFF97E3CA),
+    300: Color(0xFF62D4B0),
+    400: Color(0xFF37C297),
+    500: Color(0xFF22A06B),
+    600: Color(0xFF1B8558),
+    700: Color(0xFF166B47),
+    800: Color(0xFF125338),
+    900: Color(0xFF0D3D2A),
+  });
+
+  static const Color warning = Color(0xFFF59E0B);
+  static const Color accent = Color(0xFFFF4D6D);
+
+  // Legacy compatibility helpers
+  static const MaterialColor grey = MaterialColor(0xFF64748B, <int, Color>{
+    50: Color(0xFFF8FAFC),
+    100: Color(0xFFF1F5F9),
+    200: Color(0xFFE2E8F0),
+    300: Color(0xFFCBD5E1),
+    400: Color(0xFF94A3B8),
+    500: Color(0xFF64748B),
+    600: Color(0xFF475569),
+    700: Color(0xFF334155),
+    800: Color(0xFF1E293B),
+    900: Color(0xFF0F172A),
+  });
+
+  static const Color secondary = Color(0xFF2F80ED);
+  static const Color shadow = Color(0x1A0C1015);
+
+  // Utility Values
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color transparent = Color(0x00000000);
+}
+
+================================================================================
+File: lib/core/themes/app_text_themes/app_text_themes.dart
+================================================================================
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../app_colors/app_colors.dart';
+
+abstract final class AppTextThemes {
+  static TextTheme textTheme() {
+    const baseColor = AppColors.textPrimary;
+
+    final defaultStyles = const TextTheme(
+      displayLarge: TextStyle(fontWeight: FontWeight.w600, fontSize: 80, color: baseColor),
+      displayMedium: TextStyle(fontWeight: FontWeight.w600, fontSize: 40, color: baseColor),
+      displaySmall: TextStyle(fontWeight: FontWeight.w600, fontSize: 36, color: baseColor),
+      headlineLarge: TextStyle(fontWeight: FontWeight.w600, fontSize: 24, color: baseColor),
+      headlineMedium: TextStyle(fontWeight: FontWeight.w600, fontSize: 20, color: baseColor),
+      headlineSmall: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, color: baseColor),
+      titleLarge: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, color: baseColor),
+      titleMedium: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: baseColor),
+      titleSmall: TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: baseColor),
+      bodyLarge: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: baseColor),
+      bodyMedium: TextStyle(fontWeight: FontWeight.w400, fontSize: 14, color: baseColor),
+      bodySmall: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: baseColor),
+      labelLarge: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: baseColor),
+      labelMedium: TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: baseColor),
+      labelSmall: TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: baseColor),
+    );
+
+    final scaled = defaultStyles.copyWith(
+      displayLarge: defaultStyles.displayLarge?.copyWith(fontSize: 80.sp),
+      displayMedium: defaultStyles.displayMedium?.copyWith(fontSize: 40.sp),
+      displaySmall: defaultStyles.displaySmall?.copyWith(fontSize: 36.sp),
+      headlineLarge: defaultStyles.headlineLarge?.copyWith(fontSize: 24.sp),
+      headlineMedium: defaultStyles.headlineMedium?.copyWith(fontSize: 20.sp),
+      headlineSmall: defaultStyles.headlineSmall?.copyWith(fontSize: 18.sp),
+      titleLarge: defaultStyles.titleLarge?.copyWith(fontSize: 18.sp),
+      titleMedium: defaultStyles.titleMedium?.copyWith(fontSize: 16.sp),
+      titleSmall: defaultStyles.titleSmall?.copyWith(fontSize: 14.sp),
+      bodyLarge: defaultStyles.bodyLarge?.copyWith(fontSize: 16.sp),
+      bodyMedium: defaultStyles.bodyMedium?.copyWith(fontSize: 14.sp),
+      bodySmall: defaultStyles.bodySmall?.copyWith(fontSize: 12.sp),
+      labelLarge: defaultStyles.labelLarge?.copyWith(fontSize: 16.sp),
+      labelMedium: defaultStyles.labelMedium?.copyWith(fontSize: 14.sp),
+      labelSmall: defaultStyles.labelSmall?.copyWith(fontSize: 12.sp),
+    );
+
+    return GoogleFonts.interTextTheme(scaled);
+  }
+
+  static TextStyle logoTheme() {
+    return GoogleFonts.imFellEnglish(
+      fontSize: 20.sp,
+      fontWeight: FontWeight.w400,
+      color: AppColors.primary,
+    );
+  }
+}
+
+================================================================================
+File: lib/core/themes/app_themes/app_theme.dart
+================================================================================
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../app_colors/app_colors.dart';
+import '../app_text_themes/app_text_themes.dart';
+
+abstract final class AppTheme {
+  static ThemeData get light => _buildTheme();
+
+  static ThemeData _buildTheme() {
+    final textTheme = AppTextThemes.textTheme();
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      colorSchemeSeed: AppColors.primary,
+      scaffoldBackgroundColor: AppColors.background,
+      textTheme: textTheme,
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColors.background,
+        foregroundColor: AppColors.textPrimary,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: GoogleFonts.inter(
+          fontSize: 24.sp,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.white,
+          disabledBackgroundColor: AppColors.grey.shade300,
+          disabledForegroundColor: AppColors.white,
+          minimumSize: Size(342.w, 50.h),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.r),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+          textStyle: GoogleFonts.inter(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: AppColors.white,
+          foregroundColor: AppColors.primary,
+          minimumSize: Size(342.w, 50.h),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.r),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+          side: const BorderSide(
+            color: AppColors.primary,
+            width: 1.5,
+          ),
+          textStyle: GoogleFonts.inter(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          textStyle: GoogleFonts.inter(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.surface,
+        prefixIconColor: AppColors.textSecondary,
+        suffixIconColor: AppColors.textSecondary,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: const BorderSide(color: AppColors.border, width: 1.5),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: const BorderSide(color: AppColors.border, width: 1.5),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.r),
+          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+        ),
+        labelStyle: GoogleFonts.inter(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w500,
+          color: AppColors.textPrimary,
+        ),
+        hintStyle: GoogleFonts.inter(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textSecondary,
+        ),
+        errorStyle: GoogleFonts.inter(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w400,
+          color: AppColors.error,
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 16.w,
+          vertical: 14.h,
+        ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.r),
+        ),
+        side: const BorderSide(color: AppColors.border),
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.primary;
+          }
+          return AppColors.surface;
+        }),
+        checkColor: const WidgetStatePropertyAll(AppColors.white),
+      ),
+      dividerTheme: const DividerThemeData(
+        color: AppColors.divider,
+        thickness: 1,
+        space: 0,
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: AppColors.surface,
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: AppColors.textSecondary,
+        type: BottomNavigationBarType.fixed,
+        elevation: 8,
+        selectedLabelStyle: GoogleFonts.inter(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w500,
+        ),
+        unselectedLabelStyle: GoogleFonts.inter(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      chipTheme: ChipThemeData(
+        backgroundColor: AppColors.primary.shade50,
+        labelStyle: GoogleFonts.inter(
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w500,
+          color: AppColors.primary,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        side: BorderSide.none,
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: AppColors.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        titleTextStyle: GoogleFonts.inter(
+          fontSize: 18.sp,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
+        ),
+        contentTextStyle: GoogleFonts.inter(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textSecondary,
+        ),
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: AppColors.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+        ),
+      ),
+    );
+  }
+}
+
+================================================================================
+File: lib/l10n/app_ar.arb
+================================================================================
+
+{
+  "@@locale": "ar",
+  "loginTitle": "تسجيل الدخول",
+  "emailLabel": "البريد الإلكتروني",
+  "emailHint": "أدخل بريدك الإلكتروني",
+  "emailError": "البريد الإلكتروني غير صالح",
+  "passwordLabel": "كلمة المرور",
+  "passwordHint": "أدخل كلمة المرور",
+  "passwordError": "كلمة المرور غير صحيحة",
+  "rememberMe": "تذكرني",
+  "forgetPassword": "نسيت كلمة المرور؟",
+  "loginButton": "تسجيل الدخول",
+  "continueAsGuest": "المتابعة كزائر",
+  "dontHaveAccount": "ليس لديك حساب؟",
+  "signUp": "إنشاء حساب",
+  "firstNameLabel": "الاسم الأول",
+  "firstNameHint": "أدخل الاسم الأول",
+  "lastNameLabel": "اسم العائلة",
+  "lastNameHint": "أدخل اسم العائلة",
+  "confirmPasswordLabel": "تأكيد كلمة المرور",
+  "confirmPasswordHint": "أدخل تأكيد كلمة المرور",
+  "phoneNumberLabel": "رقم الهاتف",
+  "phoneNumberHint": "أدخل رقم الهاتف",
+  "genderTitle": "النوع",
+  "female": "أنثى",
+  "male": "ذكر",
+  "termsPrefix": "بإنشائك للحساب، فأنت توافق على ",
+  "termsLink": "الشروط والأحكام",
+  "alreadyHaveAccount": "لديك حساب بالفعل؟",
+  "passwordAppBarTitle": "كلمة المرور",
+  "forgetPasswordHeader": "نسيت كلمة المرور",
+  "forgetPasswordSubtitle": "يرجى إدخال البريد الإلكتروني المرتبط بحسابك",
+  "confirmButton": "تأكيد",
+  "emailVerificationTitle": "التحقق من البريد الإلكتروني",
+  "emailVerificationSubtitle": "يرجى إدخال الرمز المرسل إلى بريدك الإلكتروني",
+  "invalidCodeError": "رمز غير صالح",
+  "didntReceiveCode": "لم يصلك الرمز؟ ",
+  "resendLink": "إعادة الإرسال",
+  "resetPasswordTitle": "إعادة تعيين كلمة المرور",
+  "resetPasswordSubtitle": "يجب ألا تكون كلمة المرور فارغة، وأن تحتوي على 6 أحرف على الأقل متضمنة حرفاً كبيراً ورقماً واحداً على الأقل",
+  "newPasswordLabel": "كلمة المرور الجديدة",
+  "floweryAppbarTitle": "فلاوري",
+  "loginFailed": "فشل تسجيل الدخول",
+  "loginSuccess": "تم تسجيل الدخول بنجاح",
+  "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+  "somethingWentWrong": "حدث خطأ ما، يرجى المحاولة مرة أخرى",
+  "emailRequired": "البريد الإلكتروني مطلوب",
+  "emailInvalid": "أدخل بريداً إلكترونياً صالحاً",
+  "passwordRequired": "كلمة المرور مطلوبة",
+  "passwordMinLength": "يجب ألا تقل كلمة المرور عن 8 أحرف",
+  "passwordStrongRules": "يجب أن تحتوي كلمة المرور على أحرف كبيرة وصغيرة ورقم ورمز خاص",
+  "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+  "confirmPasswordMismatch": "كلمتا المرور غير متطابقتين",
+  "usernameRequired": "اسم المستخدم مطلوب",
+  "usernameMinLength": "يجب ألا يقل اسم المستخدم عن 3 أحرف",
+  "firstNameRequired": "الاسم الأول مطلوب",
+  "firstNameOnlyLetters": "يجب أن يحتوي الاسم الأول على أحرف فقط",
+  "lastNameRequired": "اسم العائلة مطلوب",
+  "lastNameOnlyLetters": "يجب أن يحتوي اسم العائلة على أحرف فقط",
+  "phoneRequired": "رقم الهاتف مطلوب",
+  "phoneInvalid": "أدخل رقم هاتف مصري صالح",
+  "registerError": "فشل إنشاء الحساب",
+  "registerSuccess": "تم إنشاء الحساب بنجاح"
+}
+
+================================================================================
+File: lib/l10n/app_en.arb
+================================================================================
+
+{
+  "@@locale": "en",
+  "loginTitle": "Login",
+  "emailLabel": "Email",
+  "emailHint": "Enter your email",
+  "emailError": "This Email is not valid",
+  "passwordLabel": "Password",
+  "passwordHint": "Enter your password",
+  "passwordError": "Invalid password",
+  "rememberMe": "Remember me",
+  "forgetPassword": "Forget password?",
+  "loginButton": "Login",
+  "continueAsGuest": "Continue as guest",
+  "dontHaveAccount": "Don't have an account?",
+  "signUp": "Sign up",
+  "firstNameLabel": "First name",
+  "firstNameHint": "Enter first name",
+  "lastNameLabel": "Last name",
+  "lastNameHint": "Enter last name",
+  "confirmPasswordLabel": "Confirm password",
+  "confirmPasswordHint": "Confirm password",
+  "phoneNumberLabel": "Phone number",
+  "phoneNumberHint": "Enter phone number",
+  "genderTitle": "Gender",
+  "female": "Female",
+  "male": "Male",
+  "termsPrefix": "Creating an account, you agree to our ",
+  "termsLink": "Terms&Conditions",
+  "alreadyHaveAccount": "Already have an account?",
+  "passwordAppBarTitle": "Password",
+  "forgetPasswordHeader": "Forget password",
+  "forgetPasswordSubtitle": "Please enter your email associated to your account",
+  "confirmButton": "Confirm",
+  "emailVerificationTitle": "Email verification",
+  "emailVerificationSubtitle": "Please enter your code that send to your email address",
+  "invalidCodeError": "Invalid code",
+  "didntReceiveCode": "Didn't receive code? ",
+  "resendLink": "Resend",
+  "resetPasswordTitle": "Reset password",
+  "resetPasswordSubtitle": "Password must not be empty and must contain\n 6 characters with upper case letter and one\n number at least",
+  "newPasswordLabel": "New password",
+  "floweryAppbarTitle": "Flowery",
+  "loginFailed": "Login failed",
+  "loginSuccess": "Login successful",
+  "invalidCredentials": "Invalid email or password",
+  "somethingWentWrong": "Something went wrong",
+  "emailRequired": "Email is required",
+  "emailInvalid": "Enter a valid email",
+  "passwordRequired": "Password is required",
+  "passwordMinLength": "Password must be at least 8 characters",
+  "passwordStrongRules": "Password must contain uppercase, lowercase, number and special character",
+  "confirmPasswordRequired": "Please confirm your password",
+  "confirmPasswordMismatch": "Passwords do not match",
+  "usernameRequired": "Username is required",
+  "usernameMinLength": "Username must be at least 3 characters",
+  "firstNameRequired": "First name is required",
+  "firstNameOnlyLetters": "First name must contain only letters",
+  "lastNameRequired": "Last name is required",
+  "lastNameOnlyLetters": "Last name must contain only letters",
+  "phoneRequired": "Phone number is required",
+  "phoneInvalid": "Enter a valid Egyptian phone number",
+  "registerError": "Failed register",
+  "registerSuccess": "Register successful"
+}
+
+================================================================================
+File: lib/l10n/app_localizations.dart
+================================================================================
+
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations_ar.dart';
+import 'app_localizations_en.dart';
+
+// ignore_for_file: type=lint
+
+/// Callers can lookup localized strings with an instance of AppLocalizations
+/// returned by `AppLocalizations.of(context)`.
+///
+/// Applications need to include `AppLocalizations.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'l10n/app_localizations.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: AppLocalizations.localizationsDelegates,
+///   supportedLocales: AppLocalizations.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the AppLocalizations.supportedLocales
+/// property.
+abstract class AppLocalizations {
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+
+  final String localeName;
+
+  static AppLocalizations? of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('ar'),
+    Locale('en'),
+  ];
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get loginTitle;
+
+  /// No description provided for @emailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// No description provided for @emailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get emailHint;
+
+  /// No description provided for @emailError.
+  ///
+  /// In en, this message translates to:
+  /// **'This Email is not valid'**
+  String get emailError;
+
+  /// No description provided for @passwordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordLabel;
+
+  /// No description provided for @passwordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get passwordHint;
+
+  /// No description provided for @passwordError.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid password'**
+  String get passwordError;
+
+  /// No description provided for @rememberMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember me'**
+  String get rememberMe;
+
+  /// No description provided for @forgetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forget password?'**
+  String get forgetPassword;
+
+  /// No description provided for @loginButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get loginButton;
+
+  /// No description provided for @continueAsGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as guest'**
+  String get continueAsGuest;
+
+  /// No description provided for @dontHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get dontHaveAccount;
+
+  /// No description provided for @signUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up'**
+  String get signUp;
+
+  /// No description provided for @firstNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get firstNameLabel;
+
+  /// No description provided for @firstNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter first name'**
+  String get firstNameHint;
+
+  /// No description provided for @lastNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name'**
+  String get lastNameLabel;
+
+  /// No description provided for @lastNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter last name'**
+  String get lastNameHint;
+
+  /// No description provided for @confirmPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get confirmPasswordLabel;
+
+  /// No description provided for @confirmPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get confirmPasswordHint;
+
+  /// No description provided for @phoneNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get phoneNumberLabel;
+
+  /// No description provided for @phoneNumberHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter phone number'**
+  String get phoneNumberHint;
+
+  /// No description provided for @genderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get genderTitle;
+
+  /// No description provided for @female.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get female;
+
+  /// No description provided for @male.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get male;
+
+  /// No description provided for @termsPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating an account, you agree to our '**
+  String get termsPrefix;
+
+  /// No description provided for @termsLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms&Conditions'**
+  String get termsLink;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @passwordAppBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordAppBarTitle;
+
+  /// No description provided for @forgetPasswordHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Forget password'**
+  String get forgetPasswordHeader;
+
+  /// No description provided for @forgetPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email associated to your account'**
+  String get forgetPasswordSubtitle;
+
+  /// No description provided for @confirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirmButton;
+
+  /// No description provided for @emailVerificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verification'**
+  String get emailVerificationTitle;
+
+  /// No description provided for @emailVerificationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your code that send to your email address'**
+  String get emailVerificationSubtitle;
+
+  /// No description provided for @invalidCodeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid code'**
+  String get invalidCodeError;
+
+  /// No description provided for @didntReceiveCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive code? '**
+  String get didntReceiveCode;
+
+  /// No description provided for @resendLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend'**
+  String get resendLink;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must not be empty and must contain\n 6 characters with upper case letter and one\n number at least'**
+  String get resetPasswordSubtitle;
+
+  /// No description provided for @newPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get newPasswordLabel;
+
+  /// No description provided for @floweryAppbarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Flowery'**
+  String get floweryAppbarTitle;
+
+  /// No description provided for @loginFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed'**
+  String get loginFailed;
+
+  /// No description provided for @loginSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Login successful'**
+  String get loginSuccess;
+
+  /// No description provided for @invalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email or password'**
+  String get invalidCredentials;
+
+  /// No description provided for @somethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get somethingWentWrong;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// No description provided for @emailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email'**
+  String get emailInvalid;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
+
+  /// No description provided for @passwordMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get passwordMinLength;
+
+  /// No description provided for @passwordStrongRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain uppercase, lowercase, number and special character'**
+  String get passwordStrongRules;
+
+  /// No description provided for @confirmPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password'**
+  String get confirmPasswordRequired;
+
+  /// No description provided for @confirmPasswordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get confirmPasswordMismatch;
+
+  /// No description provided for @usernameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Username is required'**
+  String get usernameRequired;
+
+  /// No description provided for @usernameMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Username must be at least 3 characters'**
+  String get usernameMinLength;
+
+  /// No description provided for @firstNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'First name is required'**
+  String get firstNameRequired;
+
+  /// No description provided for @firstNameOnlyLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'First name must contain only letters'**
+  String get firstNameOnlyLetters;
+
+  /// No description provided for @lastNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name is required'**
+  String get lastNameRequired;
+
+  /// No description provided for @lastNameOnlyLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name must contain only letters'**
+  String get lastNameOnlyLetters;
+
+  /// No description provided for @phoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required'**
+  String get phoneRequired;
+
+  /// No description provided for @phoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid Egyptian phone number'**
+  String get phoneInvalid;
+
+  /// No description provided for @registerError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed register'**
+  String get registerError;
+
+  /// No description provided for @registerSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Register successful'**
+  String get registerSuccess;
+}
+
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  Future<AppLocalizations> load(Locale locale) {
+    return SynchronousFuture<AppLocalizations>(lookupAppLocalizations(locale));
+  }
+
+  @override
+  bool isSupported(Locale locale) =>
+      <String>['ar', 'en'].contains(locale.languageCode);
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+AppLocalizations lookupAppLocalizations(Locale locale) {
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'ar':
+      return AppLocalizationsAr();
+    case 'en':
+      return AppLocalizationsEn();
+  }
+
+  throw FlutterError(
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
+}
+
+================================================================================
+File: lib/l10n/app_localizations_ar.dart
+================================================================================
+
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Arabic (`ar`).
+class AppLocalizationsAr extends AppLocalizations {
+  AppLocalizationsAr([String locale = 'ar']) : super(locale);
+
+  @override
+  String get loginTitle => 'تسجيل الدخول';
+
+  @override
+  String get emailLabel => 'البريد الإلكتروني';
+
+  @override
+  String get emailHint => 'أدخل بريدك الإلكتروني';
+
+  @override
+  String get emailError => 'البريد الإلكتروني غير صالح';
+
+  @override
+  String get passwordLabel => 'كلمة المرور';
+
+  @override
+  String get passwordHint => 'أدخل كلمة المرور';
+
+  @override
+  String get passwordError => 'كلمة المرور غير صحيحة';
+
+  @override
+  String get rememberMe => 'تذكرني';
+
+  @override
+  String get forgetPassword => 'نسيت كلمة المرور؟';
+
+  @override
+  String get loginButton => 'تسجيل الدخول';
+
+  @override
+  String get continueAsGuest => 'المتابعة كزائر';
+
+  @override
+  String get dontHaveAccount => 'ليس لديك حساب؟';
+
+  @override
+  String get signUp => 'إنشاء حساب';
+
+  @override
+  String get firstNameLabel => 'الاسم الأول';
+
+  @override
+  String get firstNameHint => 'أدخل الاسم الأول';
+
+  @override
+  String get lastNameLabel => 'اسم العائلة';
+
+  @override
+  String get lastNameHint => 'أدخل اسم العائلة';
+
+  @override
+  String get confirmPasswordLabel => 'تأكيد كلمة المرور';
+
+  @override
+  String get confirmPasswordHint => 'أدخل تأكيد كلمة المرور';
+
+  @override
+  String get phoneNumberLabel => 'رقم الهاتف';
+
+  @override
+  String get phoneNumberHint => 'أدخل رقم الهاتف';
+
+  @override
+  String get genderTitle => 'النوع';
+
+  @override
+  String get female => 'أنثى';
+
+  @override
+  String get male => 'ذكر';
+
+  @override
+  String get termsPrefix => 'بإنشائك للحساب، فأنت توافق على ';
+
+  @override
+  String get termsLink => 'الشروط والأحكام';
+
+  @override
+  String get alreadyHaveAccount => 'لديك حساب بالفعل؟';
+
+  @override
+  String get passwordAppBarTitle => 'كلمة المرور';
+
+  @override
+  String get forgetPasswordHeader => 'نسيت كلمة المرور';
+
+  @override
+  String get forgetPasswordSubtitle =>
+      'يرجى إدخال البريد الإلكتروني المرتبط بحسابك';
+
+  @override
+  String get confirmButton => 'تأكيد';
+
+  @override
+  String get emailVerificationTitle => 'التحقق من البريد الإلكتروني';
+
+  @override
+  String get emailVerificationSubtitle =>
+      'يرجى إدخال الرمز المرسل إلى بريدك الإلكتروني';
+
+  @override
+  String get invalidCodeError => 'رمز غير صالح';
+
+  @override
+  String get didntReceiveCode => 'لم يصلك الرمز؟ ';
+
+  @override
+  String get resendLink => 'إعادة الإرسال';
+
+  @override
+  String get resetPasswordTitle => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'يجب ألا تكون كلمة المرور فارغة، وأن تحتوي على 6 أحرف على الأقل متضمنة حرفاً كبيراً ورقماً واحداً على الأقل';
+
+  @override
+  String get newPasswordLabel => 'كلمة المرور الجديدة';
+
+  @override
+  String get floweryAppbarTitle => 'فلاوري';
+
+  @override
+  String get loginFailed => 'فشل تسجيل الدخول';
+
+  @override
+  String get loginSuccess => 'تم تسجيل الدخول بنجاح';
+
+  @override
+  String get invalidCredentials => 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+
+  @override
+  String get somethingWentWrong => 'حدث خطأ ما، يرجى المحاولة مرة أخرى';
+
+  @override
+  String get emailRequired => 'البريد الإلكتروني مطلوب';
+
+  @override
+  String get emailInvalid => 'أدخل بريداً إلكترونياً صالحاً';
+
+  @override
+  String get passwordRequired => 'كلمة المرور مطلوبة';
+
+  @override
+  String get passwordMinLength => 'يجب ألا تقل كلمة المرور عن 8 أحرف';
+
+  @override
+  String get passwordStrongRules =>
+      'يجب أن تحتوي كلمة المرور على أحرف كبيرة وصغيرة ورقم ورمز خاص';
+
+  @override
+  String get confirmPasswordRequired => 'يرجى تأكيد كلمة المرور';
+
+  @override
+  String get confirmPasswordMismatch => 'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get usernameRequired => 'اسم المستخدم مطلوب';
+
+  @override
+  String get usernameMinLength => 'يجب ألا يقل اسم المستخدم عن 3 أحرف';
+
+  @override
+  String get firstNameRequired => 'الاسم الأول مطلوب';
+
+  @override
+  String get firstNameOnlyLetters => 'يجب أن يحتوي الاسم الأول على أحرف فقط';
+
+  @override
+  String get lastNameRequired => 'اسم العائلة مطلوب';
+
+  @override
+  String get lastNameOnlyLetters => 'يجب أن يحتوي اسم العائلة على أحرف فقط';
+
+  @override
+  String get phoneRequired => 'رقم الهاتف مطلوب';
+
+  @override
+  String get phoneInvalid => 'أدخل رقم هاتف مصري صالح';
+
+  @override
+  String get registerError => 'فشل إنشاء الحساب';
+
+  @override
+  String get registerSuccess => 'تم إنشاء الحساب بنجاح';
+}
+
+================================================================================
+File: lib/l10n/app_localizations_en.dart
+================================================================================
+
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for English (`en`).
+class AppLocalizationsEn extends AppLocalizations {
+  AppLocalizationsEn([String locale = 'en']) : super(locale);
+
+  @override
+  String get loginTitle => 'Login';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get emailHint => 'Enter your email';
+
+  @override
+  String get emailError => 'This Email is not valid';
+
+  @override
+  String get passwordLabel => 'Password';
+
+  @override
+  String get passwordHint => 'Enter your password';
+
+  @override
+  String get passwordError => 'Invalid password';
+
+  @override
+  String get rememberMe => 'Remember me';
+
+  @override
+  String get forgetPassword => 'Forget password?';
+
+  @override
+  String get loginButton => 'Login';
+
+  @override
+  String get continueAsGuest => 'Continue as guest';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account?';
+
+  @override
+  String get signUp => 'Sign up';
+
+  @override
+  String get firstNameLabel => 'First name';
+
+  @override
+  String get firstNameHint => 'Enter first name';
+
+  @override
+  String get lastNameLabel => 'Last name';
+
+  @override
+  String get lastNameHint => 'Enter last name';
+
+  @override
+  String get confirmPasswordLabel => 'Confirm password';
+
+  @override
+  String get confirmPasswordHint => 'Confirm password';
+
+  @override
+  String get phoneNumberLabel => 'Phone number';
+
+  @override
+  String get phoneNumberHint => 'Enter phone number';
+
+  @override
+  String get genderTitle => 'Gender';
+
+  @override
+  String get female => 'Female';
+
+  @override
+  String get male => 'Male';
+
+  @override
+  String get termsPrefix => 'Creating an account, you agree to our ';
+
+  @override
+  String get termsLink => 'Terms&Conditions';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account?';
+
+  @override
+  String get passwordAppBarTitle => 'Password';
+
+  @override
+  String get forgetPasswordHeader => 'Forget password';
+
+  @override
+  String get forgetPasswordSubtitle =>
+      'Please enter your email associated to your account';
+
+  @override
+  String get confirmButton => 'Confirm';
+
+  @override
+  String get emailVerificationTitle => 'Email verification';
+
+  @override
+  String get emailVerificationSubtitle =>
+      'Please enter your code that send to your email address';
+
+  @override
+  String get invalidCodeError => 'Invalid code';
+
+  @override
+  String get didntReceiveCode => 'Didn\'t receive code? ';
+
+  @override
+  String get resendLink => 'Resend';
+
+  @override
+  String get resetPasswordTitle => 'Reset password';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'Password must not be empty and must contain\n 6 characters with upper case letter and one\n number at least';
+
+  @override
+  String get newPasswordLabel => 'New password';
+
+  @override
+  String get floweryAppbarTitle => 'Flowery';
+
+  @override
+  String get loginFailed => 'Login failed';
+
+  @override
+  String get loginSuccess => 'Login successful';
+
+  @override
+  String get invalidCredentials => 'Invalid email or password';
+
+  @override
+  String get somethingWentWrong => 'Something went wrong';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get emailInvalid => 'Enter a valid email';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordMinLength => 'Password must be at least 8 characters';
+
+  @override
+  String get passwordStrongRules =>
+      'Password must contain uppercase, lowercase, number and special character';
+
+  @override
+  String get confirmPasswordRequired => 'Please confirm your password';
+
+  @override
+  String get confirmPasswordMismatch => 'Passwords do not match';
+
+  @override
+  String get usernameRequired => 'Username is required';
+
+  @override
+  String get usernameMinLength => 'Username must be at least 3 characters';
+
+  @override
+  String get firstNameRequired => 'First name is required';
+
+  @override
+  String get firstNameOnlyLetters => 'First name must contain only letters';
+
+  @override
+  String get lastNameRequired => 'Last name is required';
+
+  @override
+  String get lastNameOnlyLetters => 'Last name must contain only letters';
+
+  @override
+  String get phoneRequired => 'Phone number is required';
+
+  @override
+  String get phoneInvalid => 'Enter a valid Egyptian phone number';
+
+  @override
+  String get registerError => 'Failed register';
+
+  @override
+  String get registerSuccess => 'Register successful';
+}
+
+================================================================================
+File: lib/main.dart
+================================================================================
+
+import 'package:cliniq_final_project/l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
+
+import 'config/di/di.dart';
+import 'config/routing/app_routes.dart';
+import 'config/routing/routes.dart';
+import 'core/themes/app_themes/app_theme.dart';
+
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureDependencies();
+  runApp(
+    ScreenUtilPlusInit(
+      designSize: const Size(375, 812),
+
+      minTextAdapt: true,
+
+      splitScreenMode: true,
+
+      child: CliniqApp(),
+    ),
+  );
+}
+
+class CliniqApp extends StatelessWidget {
+  const CliniqApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      onGenerateRoute: AppRoutes.onGenerateRoute,
+      initialRoute: Routes.login,
+      theme: AppTheme.light,
+      debugShowCheckedModeBanner: false,
+      title: 'Cliniq App',
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // الإنجليزية
+        Locale('ar'), // العربية
+      ],
+      locale: const Locale('ar'),
+    );
+  }
+}
