@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 
 abstract final class AppColors {
-  // Primary Palette
-  static const MaterialColor primary = MaterialColor(0xFF0284C7, <int, Color>{
-    50: Color(0xFFE0F2FE),
-    100: Color(0xFFBAE6FD),
-    200: Color(0xFF7DD3FC),
-    300: Color(0xFF38BDF8),
-    400: Color(0xFF38BDF8),
-    500: Color(0xFF0284C7),
-    600: Color(0xFF0284C7),
-    700: Color(0xFF0369A1),
-    800: Color(0xFF075985),
-    900: Color(0xFF0C4A6E),
+  // Primary Palette (#2F88ED)
+  static const MaterialColor primary = MaterialColor(0xFF2F88ED, <int, Color>{
+    50: Color(0xFFEAF4FF),
+    100: Color(0xFFD6E8FF),
+    200: Color(0xFFB5D5FF),
+    300: Color(0xFF8BBBFF),
+    400: Color(0xFF5BA2FF),
+    500: Color(0xFF2F88ED),
+    600: Color(0xFF1D6ED4),
+    700: Color(0xFF1556AC),
+    800: Color(0xFF14478B),
+    900: Color(0xFF153C6F),
   });
 
-  static const Color primaryToken = Color(0xFF2F80ED);
+  static const Color primaryToken = Color(0xFF2F88ED);
+  static const Color lightBlue = Color(0xFFEAF4FF); // Chips, active panels
 
   // Background & Surface
   static const Color background = Color(0xFFF8FAFC); // Canvas Tint
@@ -30,21 +31,21 @@ abstract final class AppColors {
   static const Color black = Color(0xFF0C1015);
 
   // Structural Colors
-  static const Color border = Color(0xFFE2E8F0); // Structure Edge
-  static const Color divider = Color(0xFFE2E8F0); // Structure Edge
+  static const Color border = Color(0xFFE2EBF0); // Structure Edge
+  static const Color divider = Color(0xFFE2EBF0); // Structure Edge
 
   // Feedback Tokens
-  static const MaterialColor error = MaterialColor(0xFFDC2626, <int, Color>{
-    50: Color(0xFFFEF2F2),
-    100: Color(0xFFFEE2E2),
-    200: Color(0xFFFECACA),
-    300: Color(0xFFFCA5A5),
-    400: Color(0xFFF87171),
-    500: Color(0xFFDC2626),
-    600: Color(0xFFDC5A5A),
-    700: Color(0xFFB91C1C),
-    800: Color(0xFF991B1B),
-    900: Color(0xFF7F1D1D),
+  static const MaterialColor error = MaterialColor(0xFFDC5A5A, <int, Color>{
+    50: Color(0xFFFDF2F2),
+    100: Color(0xFFFDE4E4),
+    200: Color(0xFFFBCACA),
+    300: Color(0xFFF7A2A2),
+    400: Color(0xFFF07979),
+    500: Color(0xFFDC5A5A),
+    600: Color(0xFFC83F3F),
+    700: Color(0xFFA62E2E),
+    800: Color(0xFF8A2A2A),
+    900: Color(0xFF732828),
   });
 
   static const Color errorVariant = Color(0xFFDC5A5A);
@@ -63,7 +64,7 @@ abstract final class AppColors {
   });
 
   static const Color warning = Color(0xFFF59E0B);
-  static const Color accent = Color(0xFFFF4D6D);
+  static const Color accent = Color(0xFFFF4D6D); // Heart Accent
 
   // Legacy compatibility helpers
   static const MaterialColor grey = MaterialColor(0xFF64748B, <int, Color>{
@@ -79,7 +80,7 @@ abstract final class AppColors {
     900: Color(0xFF0F172A),
   });
 
-  static const Color secondary = Color(0xFF2F80ED);
+  static const Color secondary = Color(0xFF2F88ED);
   static const Color shadow = Color(0x1A0C1015);
 
   // Utility Values
