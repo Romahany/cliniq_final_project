@@ -1,14 +1,14 @@
-import 'package:cliniq_final_project/config/routing/routes.dart';
-
 import 'package:flutter/material.dart';
 
+import '../../features/auth/presentation/login/view/login_view.dart';
+import 'routes.dart';
 
 abstract class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       // Auth
       case Routes.login:
-        return MaterialPageRoute(builder: (_) => const Placeholder());
+        return MaterialPageRoute(builder: (_) => const LoginView());
 
       case Routes.signUp:
         return MaterialPageRoute(builder: (_) => const Placeholder());

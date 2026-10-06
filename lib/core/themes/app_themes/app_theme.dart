@@ -56,10 +56,7 @@ abstract final class AppTheme {
             borderRadius: BorderRadius.circular(25.r),
           ),
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
-          side: const BorderSide(
-            color: AppColors.primary,
-            width: 1.5,
-          ),
+          side: const BorderSide(color: AppColors.primary, width: 1.5),
           textStyle: GoogleFonts.inter(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
@@ -115,15 +112,10 @@ abstract final class AppTheme {
           fontWeight: FontWeight.w400,
           color: AppColors.error,
         ),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 14.h,
-        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
       ),
       checkboxTheme: CheckboxThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4.r),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.r)),
         side: const BorderSide(color: AppColors.border),
         fillColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
@@ -160,12 +152,16 @@ abstract final class AppTheme {
           fontWeight: FontWeight.w500,
           color: AppColors.primary,
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
         side: BorderSide.none,
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: AppColors.surface,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
         titleTextStyle: GoogleFonts.inter(
           fontSize: 18.sp,
           fontWeight: FontWeight.w600,
