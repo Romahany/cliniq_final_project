@@ -1,0 +1,9 @@
+flutter_native_splash:
+  color: "#DDEBFD"
+  # لو عندك لوجو ثابت يظهر فوراً في الـ Native قبل أنيميشن الـ Lottie:
+  # image: assets/icon/app_icon.png
+  android_12:
+    color: "#DDEBFD"
+    # icon_background_color: "#DDEBFD"
+  android: true
+  ios: true

@@ -1,6 +1,7 @@
 import 'package:cliniq_final_project/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 import 'config/di/di.dart';
@@ -9,7 +10,8 @@ import 'config/routing/routes.dart';
 import 'core/themes/app_themes/app_theme.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   configureDependencies();
   runApp(
     ScreenUtilPlusInit(
@@ -31,7 +33,7 @@ class CliniqApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       onGenerateRoute: AppRoutes.onGenerateRoute,
-      initialRoute: Routes.login,
+      initialRoute: Routes.splash,
       theme: AppTheme.light,
       debugShowCheckedModeBanner: false,
       title: 'Cliniq App',

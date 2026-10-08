@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../features/auth/presentation/login/view/login_view.dart';
+import '../../features/splash/presentation/screens/splash_screen.dart';
 import 'routes.dart';
 
 abstract class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case Routes.splash:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       // Auth
       case Routes.login:
         return MaterialPageRoute(builder: (_) => const LoginView());
