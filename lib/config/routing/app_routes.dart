@@ -1,7 +1,8 @@
+import '../../features/auth/presentation/register/view/register_view.dart';
+
 import 'package:cliniq_final_project/config/routing/routes.dart';
 
 import 'package:flutter/material.dart';
-
 
 abstract class AppRoutes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -11,7 +12,7 @@ abstract class AppRoutes {
         return MaterialPageRoute(builder: (_) => const Placeholder());
 
       case Routes.signUp:
-        return MaterialPageRoute(builder: (_) => const Placeholder());
+        return MaterialPageRoute(builder: (_) => const RegisterView());
 
       case Routes.forgotPassword:
         return MaterialPageRoute(builder: (_) => const Placeholder());

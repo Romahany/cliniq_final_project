@@ -39,10 +39,7 @@ class CustomTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         hintText: hintText,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 18.h,
-        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 18.h),
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
       ),

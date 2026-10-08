@@ -14,10 +14,7 @@ class CustomOutlinedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: OutlinedButton(
-        onPressed: onPressed,
-        child: Text(text),
-      ),
+      child: OutlinedButton(onPressed: onPressed, child: Text(text)),
     );
   }
 }

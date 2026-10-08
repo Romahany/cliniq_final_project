@@ -9,21 +9,81 @@ abstract final class AppTextThemes {
     const baseColor = AppColors.textPrimary;
 
     final defaultStyles = const TextTheme(
-      displayLarge: TextStyle(fontWeight: FontWeight.w600, fontSize: 80, color: baseColor),
-      displayMedium: TextStyle(fontWeight: FontWeight.w600, fontSize: 40, color: baseColor),
-      displaySmall: TextStyle(fontWeight: FontWeight.w600, fontSize: 36, color: baseColor),
-      headlineLarge: TextStyle(fontWeight: FontWeight.w600, fontSize: 24, color: baseColor),
-      headlineMedium: TextStyle(fontWeight: FontWeight.w600, fontSize: 20, color: baseColor),
-      headlineSmall: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, color: baseColor),
-      titleLarge: TextStyle(fontWeight: FontWeight.w600, fontSize: 18, color: baseColor),
-      titleMedium: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: baseColor),
-      titleSmall: TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: baseColor),
-      bodyLarge: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: baseColor),
-      bodyMedium: TextStyle(fontWeight: FontWeight.w400, fontSize: 14, color: baseColor),
-      bodySmall: TextStyle(fontWeight: FontWeight.w400, fontSize: 12, color: baseColor),
-      labelLarge: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: baseColor),
-      labelMedium: TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: baseColor),
-      labelSmall: TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: baseColor),
+      displayLarge: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 80,
+        color: baseColor,
+      ),
+      displayMedium: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 40,
+        color: baseColor,
+      ),
+      displaySmall: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 36,
+        color: baseColor,
+      ),
+      headlineLarge: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 24,
+        color: baseColor,
+      ),
+      headlineMedium: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 20,
+        color: baseColor,
+      ),
+      headlineSmall: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 18,
+        color: baseColor,
+      ),
+      titleLarge: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 18,
+        color: baseColor,
+      ),
+      titleMedium: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+        color: baseColor,
+      ),
+      titleSmall: TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 14,
+        color: baseColor,
+      ),
+      bodyLarge: TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 16,
+        color: baseColor,
+      ),
+      bodyMedium: TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 14,
+        color: baseColor,
+      ),
+      bodySmall: TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 12,
+        color: baseColor,
+      ),
+      labelLarge: TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+        color: baseColor,
+      ),
+      labelMedium: TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 14,
+        color: baseColor,
+      ),
+      labelSmall: TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 12,
+        color: baseColor,
+      ),
     );
 
     final scaled = defaultStyles.copyWith(

@@ -1,3 +1,1 @@
-abstract class ApiStrings {
-
-}
+abstract class ApiStrings {}
