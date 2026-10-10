@@ -60,5 +60,11 @@
   "phoneRequired": "Phone number is required",
   "phoneInvalid": "Enter a valid Egyptian phone number",
   "registerError": "Failed register",
-  "registerSuccess": "Register successful"
+  "registerSuccess": "Register successful",
+  "createSecurePassword": "Create a secure password",
+  "createSecurePasswordSubtitle": "Use at least 8 characters with one uppercase letter, one number, and one symbol.",
+  "enterNewPasswordHint": "Enter new password",
+  "confirmNewPasswordHint": "Confirm new password",
+  "passwordResetSuccess": "Password reset successfully",
+  "otpResentSuccess": "Verification code has been resent"
 }

@@ -195,4 +195,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get registerSuccess => 'Register successful';
+
+  @override
+  String get createSecurePassword => 'Create a secure password';
+
+  @override
+  String get createSecurePasswordSubtitle =>
+      'Use at least 8 characters with one uppercase letter, one number, and one symbol.';
+
+  @override
+  String get enterNewPasswordHint => 'Enter new password';
+
+  @override
+  String get confirmNewPasswordHint => 'Confirm new password';
+
+  @override
+  String get passwordResetSuccess => 'Password reset successfully';
+
+  @override
+  String get otpResentSuccess => 'Verification code has been resent';
 }

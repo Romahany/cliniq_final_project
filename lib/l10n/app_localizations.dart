@@ -463,6 +463,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Register successful'**
   String get registerSuccess;
+
+  /// No description provided for @createSecurePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a secure password'**
+  String get createSecurePassword;
+
+  /// No description provided for @createSecurePasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 8 characters with one uppercase letter, one number, and one symbol.'**
+  String get createSecurePasswordSubtitle;
+
+  /// No description provided for @enterNewPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new password'**
+  String get enterNewPasswordHint;
+
+  /// No description provided for @confirmNewPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm new password'**
+  String get confirmNewPasswordHint;
+
+  /// No description provided for @passwordResetSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset successfully'**
+  String get passwordResetSuccess;
+
+  /// No description provided for @otpResentSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code has been resent'**
+  String get otpResentSuccess;
 }
 
 class _AppLocalizationsDelegate

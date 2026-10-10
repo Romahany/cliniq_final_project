@@ -195,4 +195,23 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get registerSuccess => 'تم إنشاء الحساب بنجاح';
+
+  @override
+  String get createSecurePassword => 'إنشاء كلمة مرور آمنة';
+
+  @override
+  String get createSecurePasswordSubtitle =>
+      'استخدم 8 أحرف على الأقل مع حرف كبير واحد ورقم واحد ورمز واحد.';
+
+  @override
+  String get enterNewPasswordHint => 'أدخل كلمة المرور الجديدة';
+
+  @override
+  String get confirmNewPasswordHint => 'تأكيد كلمة المرور الجديدة';
+
+  @override
+  String get passwordResetSuccess => 'تمت إعادة تعيين كلمة المرور بنجاح';
+
+  @override
+  String get otpResentSuccess => 'تمت إعادة إرسال رمز التحقق بنجاح';
 }

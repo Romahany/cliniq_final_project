@@ -60,5 +60,11 @@
   "phoneRequired": "رقم الهاتف مطلوب",
   "phoneInvalid": "أدخل رقم هاتف مصري صالح",
   "registerError": "فشل إنشاء الحساب",
-  "registerSuccess": "تم إنشاء الحساب بنجاح"
+  "registerSuccess": "تم إنشاء الحساب بنجاح",
+  "createSecurePassword": "إنشاء كلمة مرور آمنة",
+  "createSecurePasswordSubtitle": "استخدم 8 أحرف على الأقل مع حرف كبير واحد ورقم واحد ورمز واحد.",
+  "enterNewPasswordHint": "أدخل كلمة المرور الجديدة",
+  "confirmNewPasswordHint": "تأكيد كلمة المرور الجديدة",
+  "passwordResetSuccess": "تمت إعادة تعيين كلمة المرور بنجاح",
+  "otpResentSuccess": "تمت إعادة إرسال رمز التحقق بنجاح"
 }

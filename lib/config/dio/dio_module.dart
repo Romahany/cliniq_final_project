@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 
 import 'package:injectable/injectable.dart';
@@ -21,8 +19,3 @@ abstract class DioModule {
     return dio;
   }
 }
-
-
-
-
-
